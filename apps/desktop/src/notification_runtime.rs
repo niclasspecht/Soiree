@@ -82,12 +82,13 @@ impl Runtime {
 		in_call: bool,
 		held: bool,
 		options: Device,
+		output: Option<&str>,
 		ctx: &eframe::egui::Context,
 	) {
 		if let Some(cue) = self.ptt.update(mode, in_call, held)
 			&& options.allows(cue)
 		{
-			self.ptt_sounds.play(cue, options.volume, ctx);
+			self.ptt_sounds.play(cue, options.volume, output, ctx);
 		}
 	}
 	pub fn clear(&mut self, window: &winit::window::Window) {
@@ -171,7 +172,7 @@ impl Runtime {
 			sound = Some(preview);
 		}
 		if let Some(sound) = sound {
-			self.sounds.play(sound, options.volume, ctx);
+			self.sounds.play(sound, options.volume, ui.voice_output.as_deref(), ctx);
 		}
 		// Counts otherwise only change while frames run: a throttled frame schedules one
 		// follow-up recount, and then the window can sleep until the next mute expiry.

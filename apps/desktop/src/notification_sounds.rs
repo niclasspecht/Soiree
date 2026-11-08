@@ -15,9 +15,12 @@ use std::{
 pub const RING_INTERVAL: Duration = Duration::from_secs(6);
 pub const OUTGOING_RING_INTERVAL: Duration = Duration::from_secs(3);
 
+/// Generation, cue, volume and the selected voice output device ID, if any.
+type Request = (u64, Sound, u8, Option<String>);
+
 #[derive(Default)]
 pub struct Sounds {
-	send: Option<SyncSender<(u64, Sound, u8)>>,
+	send: Option<SyncSender<Request>>,
 	generation: Arc<AtomicU64>,
 	status: Arc<AtomicU8>,
 }
@@ -41,16 +44,24 @@ impl Sounds {
 		self.generation.fetch_add(1, Ordering::AcqRel);
 		self.status.store(0, Ordering::Release);
 	}
-	pub fn play(&mut self, sound: Sound, volume: u8, ctx: &eframe::egui::Context) {
+	/// Plays on the voice output the user selected, like Discord's sound effects, so call
+	/// cues reach the same headset as the call. `None` follows the system default.
+	pub fn play(
+		&mut self,
+		sound: Sound,
+		volume: u8,
+		output: Option<&str>,
+		ctx: &eframe::egui::Context,
+	) {
 		if self.send.is_none() {
-			let (send, receive) = mpsc::sync_channel::<(u64, Sound, u8)>(1);
+			let (send, receive) = mpsc::sync_channel::<Request>(1);
 			let generation = self.generation.clone();
 			let status = self.status.clone();
 			let context = ctx.clone();
 			if std::thread::Builder::new()
 				.name("serein-notification-audio".into())
 				.spawn(move || {
-					while let Ok((request, sound, volume)) = receive.recv() {
+					while let Ok((request, sound, volume, output)) = receive.recv() {
 						if generation.load(Ordering::Acquire) != request {
 							continue;
 						}
@@ -58,6 +69,7 @@ impl Sounds {
 						match open(
 							sound,
 							volume,
+							output.as_deref(),
 							generation.clone(),
 							request,
 							status.clone(),
@@ -108,7 +120,7 @@ impl Sounds {
 			.send
 			.as_ref()
 			.expect("worker started")
-			.try_send((request, sound, volume))
+			.try_send((request, sound, volume, output.map(str::to_owned)))
 			.is_err()
 		{
 			self.status.store(0, Ordering::Release);
@@ -192,15 +204,28 @@ fn samples(sound: Sound, rate: u32, current: &impl Fn() -> bool) -> Result<Vec<[
 		})
 		.collect())
 }
+/// The selected voice output, or the system default while none is chosen or it is absent,
+/// matching how the call itself keeps its preference but falls back.
+fn output_device(selected: Option<&str>) -> Option<cpal::Device> {
+	let host = cpal::default_host();
+	if let Some(id) = selected
+		&& let Ok(id) = id.parse()
+		&& let Some(device) = host.device_by_id(&id)
+	{
+		return Some(device);
+	}
+	host.default_output_device()
+}
 fn open(
 	sound: Sound,
 	volume: u8,
+	output: Option<&str>,
 	generation: Arc<AtomicU64>,
 	request: u64,
 	status: Arc<AtomicU8>,
 	finished: Arc<AtomicBool>,
 ) -> Result<(cpal::Stream, Duration), ()> {
-	let device = cpal::default_host().default_output_device().ok_or(())?;
+	let device = output_device(output).ok_or(())?;
 	let supported = platform::audio::output_config(
 		&device,
 		platform::audio::OutputConfigPreference::Notification,

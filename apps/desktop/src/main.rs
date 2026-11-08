@@ -5982,6 +5982,7 @@ impl eframe::App for Desktop {
 				}),
 			self.messaging.voice_ptt_active,
 			self.messaging.notification_options,
+			self.messaging.voice_output.as_deref(),
 			ctx,
 		);
 		self.messaging.voice_ptm_active = self.state.voice.active.is_some()
