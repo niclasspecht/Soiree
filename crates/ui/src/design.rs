@@ -104,7 +104,7 @@ impl Variant {
 	];
 	pub fn label(self) -> &'static str {
 		match self {
-			Variant::Standard => "Serein",
+			Variant::Standard => "Soiree",
 			Variant::Eclipse => "Eclipse",
 			Variant::Slate => "Slate",
 			Variant::Nightfall => "Nightfall",
@@ -267,8 +267,8 @@ const fn rgba(value: u32, alpha: u8) -> Color32 {
 		alpha,
 	)
 }
-/// Serein azure: the house accent, packed for call sites that speak in integer colours.
-pub const DEFAULT_PRIMARY_RGB: u32 = 0x1a72e8;
+/// Soiree: Discord's blurple as the house accent, packed for call sites that speak in integer colours.
+pub const DEFAULT_PRIMARY_RGB: u32 = 0x5865f2;
 pub const DEFAULT_PRIMARY_COLOR: [u8; 3] = [
 	(DEFAULT_PRIMARY_RGB >> 16) as u8,
 	(DEFAULT_PRIMARY_RGB >> 8) as u8,
@@ -332,37 +332,49 @@ fn gradient(stops: [u32; 2], border: u32) -> Palette {
 /// Resolve a built-in preset with the current accent, before extension overrides or surface blending.
 pub fn builtin_colors(dark: bool, variant: Variant) -> Palette {
 	let palette = match variant {
-		Variant::Standard if dark => dark_common(
-			rgb(0x0e0e10),
-			rgb(0x141416),
-			rgb(0x18181b),
-			rgb(0x202023),
-			rgb(0x242427),
-			rgb(0x2e2e32),
-			rgb(0x27272a),
-		),
+		// Soiree: the classic Discord dark greys (server rail, channel list, chat, composer).
+		Variant::Standard if dark => {
+			let mut p = dark_common(
+				rgb(0x1e1f22),
+				rgb(0x2b2d31),
+				rgb(0x313338),
+				rgb(0x383a40),
+				rgb(0x35373c),
+				rgb(0x404249),
+				rgb(0x3f4147),
+			);
+			p.text_strong = rgb(0xf2f3f5);
+			p.text = rgb(0xdbdee1);
+			p.muted = rgb(0x949ba4);
+			p.link = rgb(0x00a8fc);
+			p.positive = rgb(0x23a55a);
+			p.warning = rgb(0xf0b232);
+			p.mention_text = rgb(0xc9cdfb);
+			p
+		}
+		// Soiree: the classic Discord light theme.
 		Variant::Standard => Palette {
-			base: rgb(0xe4e4e7),
-			sidebar: rgb(0xf2f2f4),
+			base: rgb(0xe3e5e8),
+			sidebar: rgb(0xf2f3f5),
 			chat: Color32::WHITE,
-			raised: rgb(0xebebee),
-			hover: rgb(0xe8e8eb),
-			selected: rgb(0xdadade),
-			border: rgb(0xe0e0e4),
-			text_strong: rgb(0x0f0f11),
-			text: rgb(0x2f2f34),
-			muted: rgb(0x62626a),
-			link: rgb(0x0b63d6),
+			raised: rgb(0xebedef),
+			hover: rgb(0xe0e1e5),
+			selected: rgb(0xd7d9dc),
+			border: rgb(0xe1e2e4),
+			text_strong: rgb(0x060607),
+			text: rgb(0x313338),
+			muted: rgb(0x5c5e66),
+			link: rgb(0x006ce7),
 			accent: PRIMARY,
 			accent_text: Color32::WHITE,
-			positive: rgb(0x1c9c63),
-			warning: rgb(0xc8860f),
-			danger: rgb(0xd23742),
+			positive: rgb(0x1f8b4c),
+			warning: rgb(0xb87c00),
+			danger: rgb(0xda373c),
 			mention_bg: MENTION_BG,
-			mention_text: rgb(0x14508f),
+			mention_text: rgb(0x505cdc),
 			backdrop: None,
 			canvas: Color32::WHITE,
-			surface: rgb(0xf2f2f4),
+			surface: rgb(0xf2f3f5),
 		},
 		Variant::Eclipse => dark_common(
 			Color32::BLACK,

@@ -1,0 +1,72 @@
+{
+  "manifest": {
+    "api_version": 1,
+    "id": "discord-classic",
+    "name": "Discord Classic",
+    "version": "1.0.0",
+    "author": "niclas",
+    "license": "MIT",
+    "source": "",
+    "kind": "theme"
+  },
+  "theme": {
+    "dark": {
+      "colors": {
+        "base": "#1E1F22",
+        "sidebar": "#2B2D31",
+        "chat": "#313338",
+        "raised": "#383A40",
+        "hover": "#35373C",
+        "selected": "#404249",
+        "border": "#3F4147",
+        "text_strong": "#F2F3F5",
+        "text": "#DBDEE1",
+        "muted": "#949BA4",
+        "link": "#00A8FC",
+        "accent": "#5865F2",
+        "accent_text": "#FFFFFF",
+        "positive": "#23A55A",
+        "warning": "#F0B232",
+        "danger": "#F23F43",
+        "mention_bg": "#5865F24D",
+        "mention_text": "#C9CDFB"
+      }
+    },
+    "light": {
+      "colors": {
+        "base": "#E3E5E8",
+        "sidebar": "#F2F3F5",
+        "chat": "#FFFFFF",
+        "raised": "#EBEDEF",
+        "hover": "#E0E1E5",
+        "selected": "#D7D9DC",
+        "border": "#E1E2E4",
+        "text_strong": "#060607",
+        "text": "#313338",
+        "muted": "#5C5E66",
+        "link": "#006CE7",
+        "accent": "#5865F2",
+        "accent_text": "#FFFFFF",
+        "positive": "#1F8B4C",
+        "warning": "#B87C00",
+        "danger": "#DA373C",
+        "mention_bg": "#5865F226",
+        "mention_text": "#505CDC"
+      }
+    },
+    "style": {
+      "transparency_blur": false,
+      "body_size": 16,
+      "heading_size": 20,
+      "button_size": 14,
+      "small_size": 12,
+      "monospace_size": 14,
+      "item_spacing": [8, 8],
+      "button_padding": [16, 6],
+      "control_height": 38,
+      "widget_radius": 4,
+      "window_radius": 8,
+      "menu_radius": 4
+    }
+  }
+}
