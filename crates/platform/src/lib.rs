@@ -44,7 +44,7 @@ pub use login_linux::LoginView;
 
 /// Logical height of the native header the desktop app draws above the login webview.
 pub const LOGIN_HEADER_HEIGHT: f32 = 56.0;
-const SERVICE: &str = "cz.viceverse.serein";
+const SERVICE: &str = "Niclas.Soiree";
 #[cfg(not(feature = "development-data"))]
 const ACCOUNT: &str = "discord-session";
 #[cfg(feature = "development-data")]

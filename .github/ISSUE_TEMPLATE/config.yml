@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Discord Community Server
-    url: https://discord.gg/UqTDGCENaN
-    about: Join the Serein community Discord server for questions, discussions, and troubleshooting.
-  - name: Documentation & Architecture
-    url: https://github.com/ViceVerse-cz/Serein#readme
-    about: Consult the README, Discord compatibility matrix, and platform support guides.
+  - name: Soiree README
+    url: https://github.com/niclasspecht/Soiree#readme
+    about: What Soiree changes compared to Serein, downloads and build instructions.
+  - name: Bugs that also happen in Serein
+    url: https://github.com/ViceVerse-cz/Serein/issues
+    about: If a bug is not caused by Soiree's changes, please report it to the upstream Serein project.

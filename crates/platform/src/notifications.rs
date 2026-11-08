@@ -193,7 +193,7 @@ impl Notifications {
 	/// Queue a privacy-preserving generic alert. False means disabled, unavailable or overloaded.
 	pub fn notify(&self) -> bool {
 		self.enqueue(Alert {
-			title: "Serein".into(),
+			title: "Soiree".into(),
 			body: GENERIC_BODY.into(),
 			image_path: None,
 		})
@@ -410,7 +410,7 @@ fn authorize() -> Status {
 	{
 		use windows::{UI::Notifications::ToastNotificationManager, core::HSTRING};
 		let notifier = ToastNotificationManager::CreateToastNotifierWithId(&HSTRING::from(
-			"cz.viceverse.serein",
+			"Niclas.Soiree",
 		));
 		match notifier {
 			Ok(notifier) => windows_setting_status(notifier.Setting(), windows_shortcut_exists()),
@@ -466,7 +466,7 @@ fn windows_setting_status(
 fn windows_shortcut_exists() -> bool {
 	std::env::var_os("APPDATA").is_some_and(|root| {
 		std::path::PathBuf::from(root)
-			.join("Microsoft/Windows/Start Menu/Programs/Serein.lnk")
+			.join("Microsoft/Windows/Start Menu/Programs/Soiree.lnk")
 			.is_file()
 	})
 }
@@ -518,7 +518,7 @@ fn show(alert: &Alert, activation: Activation) -> Result<NotificationHandle, ()>
 	#[cfg(target_os = "windows")]
 	{
 		use tauri_winrt_notification::{IconCrop, Toast};
-		let mut toast = Toast::new("cz.viceverse.serein")
+		let mut toast = Toast::new("Niclas.Soiree")
 			.title(&alert.title)
 			.text1(&alert.body)
 			.on_activated(move |_| {
@@ -543,7 +543,7 @@ fn show(alert: &Alert, activation: Activation) -> Result<NotificationHandle, ()>
 fn notification(alert: &Alert) -> notify_rust::Notification {
 	let mut notification = notify_rust::Notification::new();
 	notification
-		.appname("Serein")
+		.appname("Soiree")
 		.summary(&alert.title)
 		.body(&alert.body)
 		.timeout(5_000);
@@ -570,7 +570,7 @@ fn close(outstanding: &mut Option<NotificationHandle>) {
 	if outstanding.take().is_some() {
 		use windows::{UI::Notifications::ToastNotificationManager, core::HSTRING};
 		let _ = ToastNotificationManager::History()
-			.and_then(|history| history.ClearWithId(&HSTRING::from("cz.viceverse.serein")));
+			.and_then(|history| history.ClearWithId(&HSTRING::from("Niclas.Soiree")));
 	}
 }
 

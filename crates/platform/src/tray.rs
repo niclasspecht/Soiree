@@ -203,7 +203,7 @@ mod native {
 				},
 				..Default::default()
 			};
-			for (slot, unit) in data.szTip.iter_mut().zip("Serein".encode_utf16()) {
+			for (slot, unit) in data.szTip.iter_mut().zip("Soiree".encode_utf16()) {
 				*slot = unit;
 			}
 			let tray = Self {
@@ -288,10 +288,10 @@ mod native {
 
 	fn voice_state_tip(state: super::VoiceState) -> &'static str {
 		match state {
-			super::VoiceState::Unmuted => "Serein",
-			super::VoiceState::Speaking => "Serein (Speaking)",
-			super::VoiceState::Muted => "Serein (Muted)",
-			super::VoiceState::Deafened => "Serein (Deafened)",
+			super::VoiceState::Unmuted => "Soiree",
+			super::VoiceState::Speaking => "Soiree (Speaking)",
+			super::VoiceState::Muted => "Soiree (Muted)",
+			super::VoiceState::Deafened => "Soiree (Deafened)",
 		}
 	}
 

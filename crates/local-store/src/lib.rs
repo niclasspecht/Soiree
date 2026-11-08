@@ -238,15 +238,15 @@ fn resolve_data_dir(configured: Option<OsString>, default: Option<PathBuf>) -> R
 	}
 }
 
-/// Keeps source-build data persistent but separate from installed Serein data.
+/// Keeps source-build data persistent but separate from installed Soiree data.
 fn default_data_dir() -> Option<PathBuf> {
 	#[cfg(feature = "development-data")]
 	{
-		dirs::data_local_dir().map(|root| root.join("serein-development"))
+		dirs::data_local_dir().map(|root| root.join("soiree-development"))
 	}
 	#[cfg(not(feature = "development-data"))]
 	{
-		dirs::data_local_dir().map(|root| root.join("serein"))
+		dirs::data_local_dir().map(|root| root.join("soiree"))
 	}
 }
 
