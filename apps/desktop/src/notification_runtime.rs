@@ -172,7 +172,8 @@ impl Runtime {
 			sound = Some(preview);
 		}
 		if let Some(sound) = sound {
-			self.sounds.play(sound, options.volume, ui.voice_output.as_deref(), ctx);
+			self.sounds
+				.play(sound, options.volume, ui.voice_output.as_deref(), ctx);
 		}
 		// Counts otherwise only change while frames run: a throttled frame schedules one
 		// follow-up recount, and then the window can sleep until the next mute expiry.

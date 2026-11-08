@@ -219,13 +219,13 @@ fn output_device(selected: Option<&str>) -> Option<cpal::Device> {
 fn open(
 	sound: Sound,
 	volume: u8,
-	output: Option<&str>,
+	selected_output: Option<&str>,
 	generation: Arc<AtomicU64>,
 	request: u64,
 	status: Arc<AtomicU8>,
 	finished: Arc<AtomicBool>,
 ) -> Result<(cpal::Stream, Duration), ()> {
-	let device = output_device(output).ok_or(())?;
+	let device = output_device(selected_output).ok_or(())?;
 	let supported = platform::audio::output_config(
 		&device,
 		platform::audio::OutputConfigPreference::Notification,

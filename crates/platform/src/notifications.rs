@@ -409,9 +409,8 @@ fn authorize() -> Status {
 	#[cfg(target_os = "windows")]
 	{
 		use windows::{UI::Notifications::ToastNotificationManager, core::HSTRING};
-		let notifier = ToastNotificationManager::CreateToastNotifierWithId(&HSTRING::from(
-			"Niclas.Soiree",
-		));
+		let notifier =
+			ToastNotificationManager::CreateToastNotifierWithId(&HSTRING::from("Niclas.Soiree"));
 		match notifier {
 			Ok(notifier) => windows_setting_status(notifier.Setting(), windows_shortcut_exists()),
 			Err(_) => Status::Unavailable,
